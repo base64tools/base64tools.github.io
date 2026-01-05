@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Timestamp Converter Online – Unix Epoch Tool</title>
+  <meta name="description" content="Free online Unix timestamp converter. Convert between epoch time (seconds/ms) and human-readable dates." />
+  <meta name="keywords" content="timestamp converter, unix epoch converter, epoch to date online" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui; background:#f8fafc; margin:0 }
+    header { background:#2563eb; color:white; padding:20px; text-align:center }
+    nav a { color:#e0e7ff; margin:0 10px; text-decoration:none }
+    main { max-width:900px; margin:40px auto; padding:0 20px }
+    input, button { margin:8px 0; padding:10px; width:100% }
+    button { background:#2563eb; color:white; border:none; cursor:pointer }
+    textarea { width:100%; padding:10px }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Timestamp Converter</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/base64.html">Base64</a>
+    <a href="/md5.html">MD5</a>
+    <a href="/js-beautifier.html">JS Beautifier</a>
+    <a href="/json-formatter.html">JSON</a>
+    <a href="/url-encoder.html">URL Encoder</a>
+    <a href="/uuid-generator.html">UUID</a>
+    <a href="/timestamp-converter.html">Timestamp</a>
+  </nav>
+</header>
+
+<main>
+
+<p>
+Convert Unix timestamps (seconds or milliseconds since Jan 1, 1970 UTC) to dates, or dates to timestamps.
+</p>
+
+<input type="text" id="timestamp" placeholder="Enter Unix timestamp (seconds or ms)">
+<button onclick="timestampToDate()">Timestamp → Date</button>
+
+<input type="datetime-local" id="date">
+<button onclick="dateToTimestamp()">Date → Timestamp (seconds)</button>
+<button onclick="dateToTimestampMs()">Date → Timestamp (milliseconds)</button>
+
+<textarea id="output" placeholder="Result" readonly></textarea>
+
+<h2>Current Timestamp</h2>
+<pre>Seconds: <span id="currentSec"></span>
+Milliseconds: <span id="currentMs"></span></pre>
+
+<h2>Example</h2>
+<pre>Timestamp 1735689600 → 2025-01-01 00:00:00 UTC</pre>
+
+<h2>FAQ</h2>
+<p><strong>Seconds vs Milliseconds?</strong> Many APIs use ms (13 digits); traditional Unix is seconds (10 digits).</p>
+
+</main>
+
+<script>
+function timestampToDate() {
+  let ts = document.getElementById('timestamp').value.trim();
+  if (!ts) return;
+  let num = parseInt(ts);
+  let date = new Date(num > 10000000000 ? num : num * 1000); // auto-detect ms vs sec
+  document.getElementById('output').value = date.toUTCString() + '\nLocal: ' + date.toString();
+}
+
+function dateToTimestamp() {
+  let date = new Date(document.getElementById('date').value);
+  document.getElementById('output').value = Math.floor(date.getTime() / 1000);
+}
+
+function dateToTimestampMs() {
+  let date = new Date(document.getElementById('date').value);
+  document.getElementById('output').value = date.getTime();
+}
+
+// Current
+document.getElementById('currentSec').textContent = Math.floor(Date.now() / 1000);
+document.getElementById('currentMs').textContent = Date.now();
+</script>
+
+</body>
+</html>
