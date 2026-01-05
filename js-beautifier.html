@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Base64 Decode & Encode Online – Free Tool</title>
-
-  <meta name="description" content="Free online Base64 encoder and decoder. Decode Base64 to text using UTF-8, ASCII or ISO-8859-1. No signup required." />
-  <meta name="keywords" content="base64 decode, base64 encode, base64 decoder online" />
+  <title>JS Beautifier Online – Free Tool</title>
+  <meta name="description" content="Free online JavaScript beautifier. Format, indent, and pretty-print JS code easily. No signup required." />
+  <meta name="keywords" content="js beautifier, javascript formatter, js prettifier online" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.11/beautify.min.js"></script>
   <style>
     body { font-family: system-ui; background:#f8fafc; margin:0 }
     header { background:#2563eb; color:white; padding:20px; text-align:center }
     nav a { color:#e0e7ff; margin:0 10px; text-decoration:none }
     main { max-width:900px; margin:40px auto; padding:0 20px }
-    textarea, select, button { width:100%; margin:8px 0; padding:10px }
+    textarea, button { width:100%; margin:8px 0; padding:10px }
     button { background:#2563eb; color:white; border:none; cursor:pointer }
   </style>
 </head>
@@ -21,68 +20,43 @@
 <body>
 
 <header>
-  <h1>Base64 Decoder & Encoder</h1>
+  <h1>JS Beautifier</h1>
   <nav>
     <a href="/">Home</a>
     <a href="/base64.html">Base64</a>
     <a href="/md5.html">MD5</a>
+    <a href="/js-beautifier.html">JS Beautifier</a>
     <a href="/json-formatter.html">JSON</a>
+    <a href="/url-encoder.html">URL Encoder</a>
   </nav>
 </header>
 
 <main>
 
 <p>
-Base64 encoding converts binary data into readable ASCII text.
-It is commonly used in APIs, JWT tokens, and email attachments.
+JS Beautifier formats minified or ugly JavaScript code into a readable, indented structure. Useful for debugging, code reviews, and improving maintainability.
 </p>
 
-<textarea id="b64input" placeholder="Paste Base64 or text here"></textarea>
+<textarea id="input" placeholder="Paste JavaScript code here"></textarea>
 
-<select id="charset">
-  <option value="utf-8">UTF-8 (Auto)</option>
-  <option value="ascii">ASCII</option>
-  <option value="latin1">ISO-8859-1</option>
-</select>
+<button onclick="beautifyJS()">Beautify</button>
 
-<button onclick="b64encode()">Encode</button>
-<button onclick="b64decode()">Decode</button>
-
-<textarea id="b64output" placeholder="Result"></textarea>
+<textarea id="output" placeholder="Beautified Result" readonly></textarea>
 
 <h2>Example</h2>
-<pre>aGVsbG8= → hello</pre>
+<pre>Input: function hello(){console.log("world");} → Output: function hello() {\n  console.log("world");\n}</pre>
 
 <h2>FAQ</h2>
-<p><strong>Is Base64 encryption?</strong> No, it is only encoding.</p>
+<p><strong>Does it support ES6+?</strong> Yes, it handles modern JavaScript syntax.</p>
 
 </main>
 
 <script>
-function b64encode() {
+function beautifyJS() {
   try {
-    b64output.value = btoa(unescape(encodeURIComponent(b64input.value)));
+    document.getElementById('output').value = js_beautify(document.getElementById('input').value);
   } catch {
-    b64output.value = "Error encoding";
-  }
-}
-
-function b64decode() {
-  const charset = charsetSelect = document.getElementById("charset").value;
-  try {
-    const clean = b64input.value.replace(/\s+/g,"");
-    const binary = atob(clean);
-    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-
-    if (charset === "ascii")
-      return b64output.value = bytes.map(b=>b<128?String.fromCharCode(b):"?").join("");
-
-    if (charset === "latin1")
-      return b64output.value = bytes.map(b=>String.fromCharCode(b)).join("");
-
-    b64output.value = new TextDecoder("utf-8").decode(bytes);
-  } catch {
-    b64output.value = "Invalid Base64 input";
+    document.getElementById('output').value = "Error beautifying JS";
   }
 }
 </script>
@@ -94,12 +68,12 @@ function b64decode() {
  "@type":"FAQPage",
  "mainEntity":[{
    "@type":"Question",
-   "name":"What is Base64 decoding?",
-   "acceptedAnswer":{"@type":"Answer","text":"Base64 decoding converts encoded Base64 text back into readable form."}
+   "name":"What is JS beautification?",
+   "acceptedAnswer":{"@type":"Answer","text":"It reformats code for better readability without changing functionality."}
  },{
    "@type":"Question",
-   "name":"Is Base64 secure?",
-   "acceptedAnswer":{"@type":"Answer","text":"No. Base64 is not encryption, it only encodes data."}
+   "name":"Can it minify code?",
+   "acceptedAnswer":{"@type":"Answer","text":"This tool focuses on beautifying; use a minifier for compression."}
  }]
 }
 </script>
