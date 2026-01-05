@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UUID Generator Online – Free Tool</title>
+  <meta name="description" content="Free online UUID v4 generator. Create single or bulk universally unique identifiers instantly. No signup required." />
+  <meta name="keywords" content="uuid generator, guid generator, uuid v4 online, random uuid" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui; background:#f8fafc; margin:0 }
+    header { background:#2563eb; color:white; padding:20px; text-align:center }
+    nav a { color:#e0e7ff; margin:0 10px; text-decoration:none }
+    main { max-width:900px; margin:40px auto; padding:0 20px }
+    input, select, button { margin:8px 0; padding:10px; width:100% }
+    button { background:#2563eb; color:white; border:none; cursor:pointer }
+    textarea { width:100%; height:200px; padding:10px }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>UUID Generator</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/base64.html">Base64</a>
+    <a href="/md5.html">MD5</a>
+    <a href="/js-beautifier.html">JS Beautifier</a>
+    <a href="/json-formatter.html">JSON</a>
+    <a href="/url-encoder.html">URL Encoder</a>
+    <a href="/uuid-generator.html">UUID</a>
+    <a href="/timestamp-converter.html">Timestamp</a>
+  </nav>
+</header>
+
+<main>
+
+<p>
+Generate Version 4 UUIDs (randomly generated, 128-bit unique identifiers). Commonly used in databases, APIs, and distributed systems.
+</p>
+
+<label>Number of UUIDs: <input type="number" id="count" value="1" min="1" max="100"></label>
+<label>Format:
+  <select id="format">
+    <option value="lower-hyphen">Lowercase with hyphens (default)</option>
+    <option value="upper-hyphen">Uppercase with hyphens</option>
+    <option value="lower-nohyphen">Lowercase no hyphens</option>
+    <option value="upper-nohyphen">Uppercase no hyphens</option>
+  </select>
+</label>
+
+<button onclick="generateUUIDs()">Generate UUIDs</button>
+
+<textarea id="output" placeholder="Generated UUIDs will appear here" readonly></textarea>
+
+<h2>Example</h2>
+<pre>Single: 123e4567-e89b-12d3-a456-426614174000
+
+Bulk (3):
+f47ac10b-58cc-4372-a567-0e02b2c3d479
+8b3d3f1a-5e6f-4c2d-9b8a-7c6d5e4f3a2b
+...</pre>
+
+<h2>FAQ</h2>
+<p><strong>What is UUID v4?</strong> Randomly generated, virtually guaranteed unique.</p>
+<p><strong>Why not v1?</strong> v4 is privacy-friendly (no timestamp/MAC).</p>
+
+</main>
+
+<script>
+function generateUUID() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+function generateUUIDs() {
+  const count = parseInt(document.getElementById('count').value) || 1;
+  const format = document.getElementById('format').value;
+  let uuids = [];
+  for (let i = 0; i < count; i++) {
+    let uuid = generateUUID();
+    if (format.includes('upper')) uuid = uuid.toUpperCase();
+    if (format.includes('nohyphen')) uuid = uuid.replace(/-/g, '');
+    uuids.push(uuid);
+  }
+  document.getElementById('output').value = uuids.join('\n');
+}
+</script>
+
+</body>
+</html>
